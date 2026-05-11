@@ -299,42 +299,8 @@
   .season1-card li + li {
     margin-top: 4px;
   }
-
-#customLanguageSwitcher {
-  position: fixed;
-  bottom: 14px;
-  right: 14px;
-
-  background: #11151c;
-  color: #ff2e2e;
-
-  border: 1px solid rgba(255, 46, 46, 0.35);
-  border-radius: 12px;
-
-  padding: 10px 14px;
-
-  font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-
-  outline: none;
-  cursor: pointer;
-
-  z-index: 99999;
-
-  box-shadow:
-    0 0 14px rgba(255, 46, 46, 0.18);
-
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-#customLanguageSwitcher:hover {
-  box-shadow:
-    0 0 18px rgba(255, 46, 46, 0.35);
-}
-  /* ============================
-     REMINDER FOOTER STRIP
-     ============================ */
+</style>
+<style>
   .reminder-footer {
     margin-top: 8px;
     padding-top: 6px;
@@ -361,107 +327,7 @@
     }
   }
 </style>
-<style>
-/* Hide top Google banner safely */
-/* Hide top Google banner */
-.goog-te-banner-frame.skiptranslate {
-  visibility: hidden !important;
-  height: 0 !important;
-  border: none !important;
-}
 
-/* Prevent body shift */
-body {
-  top: 0 !important;
-}
-
-/* Hide Google logo */
-.goog-logo-link {
-  display: none !important;
-}
-
-/* ONLY hide the extra text */
-/* Hide top banner ONLY */
-.goog-te-banner-frame.skiptranslate {
-  visibility: hidden !important;
-  height: 0 !important;
-  border: none !important;
-}
-
-/* Prevent body shift */
-body {
-  top: 0 !important;
-}
-
-/* Hide Google logo only */
-.goog-logo-link {
-  display: none !important;
-}
-
-/* Translator container */
-#google_translate_element {
-  position: fixed;
-  bottom: 14px;
-  right: 14px;
-  z-index: 9999;
-}
-
-/* Dropdown styling */
-.goog-te-combo {
-  background: #11151c;
-  color: #ff2e2e;
-
-  border: 1px solid rgba(255, 46, 46, 0.35);
-  border-radius: 10px;
-
-  padding: 8px 12px;
-
-  font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-
-  cursor: pointer;
-  outline: none;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  box-shadow:
-    0 0 12px rgba(255, 46, 46, 0.18);
-}
-
-/* Keep dropdown visible */
-.goog-te-combo {
-  display: inline-block !important;
-
-  background: #11151c;
-  color: #ff2e2e;
-
-  border: 1px solid rgba(255, 46, 46, 0.35);
-  border-radius: 10px;
-
-  padding: 8px 12px;
-
-  font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-
-  outline: none;
-  cursor: pointer;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  box-shadow:
-    0 0 12px rgba(255, 46, 46, 0.18);
-}
-
-/* Translator positioning */
-#google_translate_element {
-  position: fixed;
-  bottom: 14px;
-  right: 14px;
-  z-index: 9999;
-}
-</style>
 </head>
 
 <body>
@@ -1062,6 +928,8 @@ body {
 
 </div>
 
+  </script>
+
 <script>
   // Master tab switching
   const masterTabs = document.querySelectorAll('.master-tab');
@@ -1098,38 +966,6 @@ body {
   });
   
 </script>
-<script>
-document.getElementById("customLanguageSwitcher")
-  .addEventListener("change", function () {
-
-    const lang = this.value;
-
-    const interval = setInterval(() => {
-      const select = document.querySelector(".goog-te-combo");
-
-      if (select) {
-        select.value = lang;
-        select.dispatchEvent(new Event("change"));
-        clearInterval(interval);
-      }
-    }, 500);
-});
-</script>
-<div id="google_translate_element" style="display:none;"></div>
-
-<script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: 'en',
-      autoDisplay: false
-    },
-    'google_translate_element'
-  );
-}
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1165,6 +1001,7 @@ document.addEventListener("DOMContentLoaded", () => {
   typeWriter();
 });
 </script>
+
 </body>
 </html>
 """
