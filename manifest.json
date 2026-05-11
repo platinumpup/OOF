@@ -1,21 +1,67 @@
 {
-  "name": "OOF OrganizedChaos",
-  "short_name": "OOF",
-  "start_url": ".",
+  "name": "[OOF]OrganizedChaos — Field Guide",
+  "short_name": "[OOF] Field Guide",
+  "description": "Season 1 Field Guide for [OOF]OrganizedChaos — Server #327. Complete guide for PvE, PvP, Heroes, and Season 1 mechanics.",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#050608",
-  "theme_color": "#ff2e2e",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0d11",
+  "theme_color": "#0b0d11",
+  "categories": ["reference", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Season 1 Guide",
+      "short_name": "Season 1",
+      "description": "Quick access to Season 1 Winter Is Coming guide",
+      "url": "/?tab=season1",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "PvE Guide",
+      "short_name": "PvE",
+      "description": "PvE farming and optimization strategies",
+      "url": "/?tab=pve",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
 }
