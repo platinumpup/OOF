@@ -133,7 +133,34 @@
     color: var(--text-soft);
     margin-top: 4px;
   }
+#translateHelpBtn {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
 
+  background: #11151c;
+  color: #ff2e2e;
+
+  border: 1px solid rgba(255, 46, 46, 0.35);
+  border-radius: 12px;
+
+  padding: 10px 14px;
+
+  font-family: "Orbitron", sans-serif;
+  font-size: 13px;
+
+  cursor: pointer;
+
+  z-index: 99999;
+
+  box-shadow:
+    0 0 14px rgba(255, 46, 46, 0.18);
+}
+
+#translateHelpBtn:hover {
+  box-shadow:
+    0 0 18px rgba(255, 46, 46, 0.35);
+}
   /* ============================
      HOLO-BAR MASTER TABS (TOP)
      ============================ */
@@ -1009,7 +1036,10 @@ document.addEventListener("DOMContentLoaded", () => {
   typeWriter();
 });
 </script>
-
+<button id="translateHelpBtn"
+onclick="alert('Use your browser translate feature from the menu or address bar.')">
+🌐 Translate
+</button>
 </body>
 </html>
 """
