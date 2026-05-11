@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="[OOF] Field Guide">
+<meta name="theme-color" content="#0b0d11">
+<meta name="description" content="[OOF]OrganizedChaos Season 1 Field Guide — Server #327">
+
 <title>[OOF]OrganizedChaos — Field Guide</title>
 
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-
 <link rel="apple-touch-icon" href="icon-512.png">
-
 <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#0b0d11">
 <style>
-  /* ============================
-     GLOBAL THEME — OOF RED
-     ============================ */
+/* ============================
+   PWA APP SHELL LAYOUT
+   ============================ */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #050608;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: #f5f5f5;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================
+   SPLASH SCREEN
+   ============================ */
 #splash {
   position: fixed;
   inset: 0;
@@ -25,32 +55,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  z-index: 99999;
+  gap: 24px;
+  z-index: 9999;
+  animation: splashFade 2.8s ease-out forwards;
 }
 
-/* TITLE */
+@keyframes splashFade {
+  0% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
 .splash-title {
-  font-family: "Orbitron", sans-serif;
-  font-size: 40px;
-  font-weight: 500;
-  letter-spacing: 2px;
+  font-family: "Orbitron", "Courier New", monospace;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 3px;
   color: #ff2e2e;
-
-  text-shadow:
-    0 0 8px rgba(255, 46, 46, 0.6),
-    0 0 18px rgba(255, 46, 46, 0.35);
-
+  text-shadow: 0 0 20px rgba(255, 46, 46, 0.8);
   display: inline-flex;
   align-items: center;
+  animation: pulse 1s ease-in-out infinite;
 }
 
-/* blinking cursor */
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(255, 46, 46, 0.8); }
+  50% { text-shadow: 0 0 30px rgba(255, 46, 46, 1); }
+}
+
 .splash-title::after {
   content: "|";
-  margin-left: 6px;
+  margin-left: 8px;
   animation: blink 0.8s infinite;
-  color: #ff2e2e;
 }
 
 @keyframes blink {
@@ -58,29 +94,27 @@
   51%, 100% { opacity: 0; }
 }
 
-/* subtitle */
 .splash-subtitle {
-  font-family: "Orbitron", sans-serif;
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: rgba(255, 46, 46, 0.6);
+  font-family: "Orbitron", monospace;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: rgba(255, 46, 46, 0.7);
 }
 
-/* loading bar */
 .loading-bar {
-  width: 320px;
-  height: 5px;
-  background: rgba(255, 46, 46, 0.12);
-  border-radius: 999px;
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 46, 46, 0.15);
+  border-radius: 2px;
   overflow: hidden;
 }
 
 .loading-fill {
   height: 100%;
   width: 0%;
-  background: #ff2e2e;
-  box-shadow: 0 0 12px rgba(255, 46, 46, 0.4);
-  animation: load 2.6s linear forwards;
+  background: linear-gradient(90deg, #ff2e2e, #ff6b6b);
+  box-shadow: 0 0 10px rgba(255, 46, 46, 0.6);
+  animation: load 2.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes load {
@@ -88,958 +122,1000 @@
   100% { width: 100%; }
 }
 
-  :root {
-    --oof-red: #ff2e2e;
-    --oof-red-soft: rgba(255, 46, 46, 0.35);
-    --bg-dark: #050608;
-    --bg-panel: #0b0d11;
-    --text-main: #f5f5f5;
-    --text-soft: #d0d0d0;
-  }
+/* ============================
+   TOP BAR / STATUS
+   ============================ */
+.app-top-bar {
+  background: #08090c;
+  border-bottom: 1px solid rgba(255, 46, 46, 0.2);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-  * {
-    box-sizing: border-box;
-  }
+.app-branding {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
 
-  body {
-    margin: 0;
-    background: radial-gradient(circle at top, #151822 0, #050608 55%, #020205 100%);
-    color: var(--text-main);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
+.app-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #ff2e2e, #cc1a1a);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
+  flex-shrink: 0;
+}
 
-  /* ============================
-     APP SHELL
-     ============================ */
-  .app-shell {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom: 40px;
-  }
+.app-title-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
 
-  header.app-header {
-    padding: 18px 24px 10px;
-  }
+.app-title-main {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .app-title {
-    font-size: 22px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #ffffff;
-  }
+.app-title-sub {
+  font-size: 11px;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .app-subtitle {
-    font-size: 12px;
-    color: var(--text-soft);
-    margin-top: 4px;
-  }
-#translateHelpBtn {
-  position: fixed;
-  bottom: 14px;
-  right: 14px;
+.app-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
 
-  background: #11151c;
+.control-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 46, 46, 0.1);
+  border: 1px solid rgba(255, 46, 46, 0.3);
+  border-radius: 8px;
   color: #ff2e2e;
-
-  border: 1px solid rgba(255, 46, 46, 0.35);
-  border-radius: 12px;
-
-  padding: 10px 14px;
-
-  font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-
   cursor: pointer;
-
-  z-index: 99999;
-
-  box-shadow:
-    0 0 14px rgba(255, 46, 46, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-#translateHelpBtn:hover {
-  box-shadow:
-    0 0 18px rgba(255, 46, 46, 0.35);
+.control-btn:active {
+  background: rgba(255, 46, 46, 0.2);
+  transform: scale(0.95);
 }
-  /* ============================
-     HOLO-BAR MASTER TABS (TOP)
-     ============================ */
-  .master-tabs {
-    display: flex;
-    gap: 24px;
-    padding: 10px 24px 14px;
-    background: #08090c;
-    border-top: 1px solid #151720;
-    border-bottom: 1px solid var(--oof-red-soft);
-    position: sticky;
-    top: 0;
-    z-index: 50;
+
+/* ============================
+   TAB BAR (BOTTOM NAV)
+   ============================ */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  background: #0b0d11;
+  border-top: 1px solid rgba(255, 46, 46, 0.15);
+  position: relative;
+  flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-bar::-webkit-scrollbar {
+  height: 3px;
+}
+
+.tab-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-bar::-webkit-scrollbar-thumb {
+  background: rgba(255, 46, 46, 0.3);
+  border-radius: 2px;
+}
+
+.tab-item {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  color: #888;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.tab-item:active {
+  color: #ff2e2e;
+}
+
+.tab-item.active {
+  color: #ff2e2e;
+  background: rgba(255, 46, 46, 0.05);
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #ff2e2e;
+  box-shadow: 0 -2px 8px rgba(255, 46, 46, 0.3);
+}
+
+/* ============================
+   MAIN CONTENT AREA
+   ============================ */
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(180deg, #151822 0%, #050608 60%);
+}
+
+.app-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 46, 46, 0.2);
+  border-radius: 3px;
+}
+
+.app-content::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 46, 46, 0.4);
+}
+
+/* ============================
+   PANELS
+   ============================ */
+.panel {
+  display: none;
+  padding: 16px;
+  gap: 12px;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.panel.active {
+  display: flex;
+}
+
+.panel-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin: 8px 0 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ff2e2e;
+}
+
+.panel-card {
+  background: rgba(17, 21, 28, 0.8);
+  border: 1px solid rgba(255, 46, 46, 0.2);
+  border-radius: 10px;
+  padding: 14px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.panel-card:active {
+  border-color: rgba(255, 46, 46, 0.4);
+  background: rgba(17, 21, 28, 0.95);
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff6b6b;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.card-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+.card-list {
+  font-size: 12px;
+  color: #d0d0d0;
+  line-height: 1.6;
+  padding-left: 14px;
+}
+
+.card-list li {
+  margin: 6px 0;
+}
+
+.card-list strong {
+  color: #ff8888;
+}
+
+.card-note {
+  background: rgba(255, 46, 46, 0.08);
+  border-left: 3px solid #ff2e2e;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #f0b0b0;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* ============================
+   SEASON 1 HYBRID VIEW
+   ============================ */
+.season1-container {
+  display: flex;
+  gap: 0;
+  height: 100%;
+}
+
+.season1-nav {
+  display: none;
+  width: 140px;
+  background: rgba(11, 13, 17, 0.9);
+  border-right: 1px solid rgba(255, 46, 46, 0.15);
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 8px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-shrink: 0;
+}
+
+.season1-nav.show {
+  display: flex;
+}
+
+.season1-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.season1-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 46, 46, 0.2);
+}
+
+.season1-nav-title {
+  font-size: 11px;
+  color: #ff2e2e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 4px;
+  border-bottom: 1px solid rgba(255, 46, 46, 0.15);
+  margin-bottom: 4px;
+}
+
+.season1-nav-btn {
+  padding: 8px 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 46, 46, 0.2);
+  border-radius: 6px;
+  color: #aaa;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.season1-nav-btn:active {
+  border-color: #ff2e2e;
+  color: #ff2e2e;
+  background: rgba(255, 46, 46, 0.1);
+}
+
+.season1-nav-btn.active {
+  border-color: #ff2e2e;
+  color: #fff;
+  background: rgba(255, 46, 46, 0.15);
+  box-shadow: 0 0 8px rgba(255, 46, 46, 0.2);
+}
+
+.season1-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.season1-section {
+  display: none;
+  gap: 12px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.season1-section.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 2px solid #ff2e2e;
+  padding-bottom: 8px;
+}
+
+/* ============================
+   UTILITY
+   ============================ */
+.placeholder {
+  background: rgba(255, 46, 46, 0.05);
+  border: 1px dashed rgba(255, 46, 46, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.spacer {
+  height: 8px;
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+@media (min-width: 768px) {
+  .season1-nav {
+    display: flex !important;
   }
 
-  .master-tab {
-    color: var(--text-soft);
-    font-size: 14px;
-    cursor: pointer;
-    padding-bottom: 6px;
-    position: relative;
-    transition: color 0.2s ease-out;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .master-tab:hover {
-    color: #ffffff;
-  }
-
-  .master-tab.active {
-    color: #ffffff;
-  }
-
-  .master-tab.active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -2px;
-    height: 2px;
-    background: var(--oof-red);
-    box-shadow: 0 0 8px var(--oof-red);
-  }
-
-  /* ============================
-     PANEL WRAPPER
-     ============================ */
-  .tab-panel {
-    display: none;
-    padding: 20px 24px;
-  }
-
-  .tab-panel.active {
-    display: block;
-  }
-
-  .panel-placeholder {
-    background: var(--bg-panel);
-    border-radius: 10px;
-    padding: 14px 16px;
-    border: 1px dashed var(--oof-red-soft);
-    color: var(--text-soft);
-    font-size: 13px;
-  }
-
-  /* ============================
-     SEASON 1 — HYBRID LAYOUT
-     ============================ */
-  .season1-wrapper {
-    display: flex;
-    gap: 16px;
-  }
-
-  /* LEFT: Vertical Sub-Tabs */
-  .season1-sidebar {
-    width: 240px;
-    background: var(--bg-panel);
-    border-radius: 10px;
-    padding: 12px;
-    border: 1px solid var(--oof-red-soft);
-    box-shadow: 0 0 18px rgba(255, 46, 46, 0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .season1-sidebar-title {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--oof-red);
-    margin-bottom: 6px;
-    border-bottom: 1px solid var(--oof-red-soft);
-    padding-bottom: 6px;
-  }
-
-  .season1-subtab {
-    background: transparent;
-    border: 1px solid var(--oof-red-soft);
-    color: var(--text-soft);
-    padding: 6px 8px;
-    border-radius: 6px;
+  .season1-nav-btn {
     font-size: 12px;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.15s ease-out;
   }
+}
 
-  .season1-subtab:hover {
-    border-color: var(--oof-red);
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(255, 46, 46, 0.35);
-  }
-
-  .season1-subtab.active {
-    background: radial-gradient(circle at top, var(--oof-red-soft), transparent 70%);
-    border-color: var(--oof-red);
-    color: #ffffff;
-  }
-
-  /* RIGHT: Content Area */
-  .season1-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .s1-section {
-    display: none;
-  }
-
-  .s1-section.active {
-    display: block;
-  }
-
-  .s1-section h2 {
-    font-size: 19px;
-    margin: 0 0 10px;
-    color: #ffffff;
-    border-bottom: 1px solid var(--oof-red-soft);
-    padding-bottom: 4px;
-  }
-
-  .season1-card {
-    background: var(--bg-panel);
-    border-radius: 10px;
+@media (max-width: 480px) {
+  .app-top-bar {
     padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid var(--oof-red-soft);
-    box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
   }
 
-  .season1-card h3 {
-    font-size: 14px;
-    margin: 0 0 6px;
-    color: #ff4a4a;
+  .app-title-main {
+    font-size: 12px;
   }
 
-  .season1-card p,
-  .season1-card li {
-    font-size: 13px;
-    line-height: 1.4;
-    color: #e0e0e0;
+  .app-title-sub {
+    font-size: 10px;
   }
 
-  .season1-card ul {
-    padding-left: 18px;
-    margin: 0;
+  .tab-item {
+    padding: 8px 12px;
+    font-size: 11px;
   }
 
-  .season1-card li + li {
-    margin-top: 4px;
+  .app-content {
+    padding-bottom: safe-area-inset-bottom;
   }
+}
+
+@supports (padding: max(0px)) {
+  .app-top-bar {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  .tab-bar {
+    padding-bottom: max(0, env(safe-area-inset-bottom));
+  }
+}
 </style>
-<style>
-  .reminder-footer {
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid var(--oof-red-soft);
-    font-size: 14px;
-    color: #f0b0b0;
-  }
-
-  .reminder-footer p {
-    margin: 0;
-  }
-
-  /* ============================
-     RESPONSIVE
-     ============================ */
-  @media (max-width: 900px) {
-    .season1-wrapper {
-      flex-direction: column;
-    }
-    .season1-sidebar {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    }
-  }
-</style>
-
 </head>
 
 <body>
+
+<!-- SPLASH SCREEN -->
 <div id="splash">
-  <div class="splash-title" id="title"></div>
-  <div class="splash-subtitle">
-    FIELD GUIDE v.1
-  </div>
+  <div class="splash-title">OOF</div>
+  <div class="splash-subtitle">FIELD GUIDE</div>
   <div class="loading-bar">
     <div class="loading-fill"></div>
   </div>
 </div>
-<div class="app-shell">
 
-  <header class="app-header">
-    <div class="app-title">[OOF]OrganizedChaos — Field Guide</div>
-    <div class="app-subtitle">• Server #327 • Internal Reference</div>
-    <div class="app-subtitle">• PlatinumBoy™</div>
-     
-  </header>
-
-  <!-- ============================
-       MASTER TABS (TOP)
-       ============================ -->
-  <div class="master-tabs">
-    <div class="master-tab active" data-target="tab-pve">PvE</div>
-    <div class="master-tab" data-target="tab-pvp">PvP</div>
-    <div class="master-tab" data-target="tab-heroes">Heroes</div>
-    <div class="master-tab" data-target="tab-intel">Intelligence</div>
-    <div class="master-tab" data-target="tab-construction">Construction</div>
-    <div class="master-tab" data-target="tab-events">Events</div>
-    <div class="master-tab" data-target="tab-union">Union</div>
-    <div class="master-tab" data-target="tab-season1">Season1</div>
+<!-- TOP BAR -->
+<div class="app-top-bar">
+  <div class="app-branding">
+    <div class="app-icon">⚔</div>
+    <div class="app-title-bar">
+      <div class="app-title-main">[OOF] Field Guide</div>
+      <div class="app-title-sub">Server #327</div>
+    </div>
   </div>
+  <div class="app-controls">
+    <button class="control-btn" id="toggleSeason1Nav" title="Menu" style="display: none;">☰</button>
+    <button class="control-btn" id="refreshBtn" title="Refresh">⟳</button>
+  </div>
+</div>
 
-  <!-- ============================
-       PVE PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-pve" class="tab-panel active">
-    <div class="panel-placeholder">
-      <strong>PvE Field Guide</strong><br>
-      This section will cover zombies, chickens, Felbloom, Royal City Clash PvE paths, and optimized stamina usage.
-      For now, it’s a placeholder.
+<!-- MAIN CONTENT -->
+<div class="app-content">
+
+  <!-- PVE PANEL -->
+  <div id="panel-pve" class="panel active">
+    <div class="panel-header">PvE Field Guide</div>
+    <div class="panel-card">
+      <div class="card-body">
+        This section covers zombies, chickens, Felbloom, Royal City Clash PvE paths, and optimized stamina usage.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       PVP PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-pvp" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>PvP Field Guide</strong><br>
-      This section will cover rally types, counter‑comps, shield discipline, and #327 war etiquette.
-      Placeholder for now — safe to ship as is.
+  <!-- PVP PANEL -->
+  <div id="panel-pvp" class="panel">
+    <div class="panel-header">PvP Field Guide</div>
+    <div class="panel-card">
+      <div class="card-body">
+        Rally types, counter-comps, shield discipline, and #327 war etiquette.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       HEROES PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-heroes" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>Heroes & Lineups</strong><br>
-      This will eventually include hero tiers, synergy notes, and recommended lineups for PvE, PvP, and events.
+  <!-- HEROES PANEL -->
+  <div id="panel-heroes" class="panel">
+    <div class="panel-header">Heroes & Lineups</div>
+    <div class="panel-card">
+      <div class="card-body">
+        Hero tiers, synergy notes, and recommended lineups for PvE, PvP, and events.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       INTELLIGENCE/RESEARCH PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-intel" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>Intelligence & Research</strong><br>
-      Planned content: intel quests, research centre, etc.
+  <!-- INTEL PANEL -->
+  <div id="panel-intel" class="panel">
+    <div class="panel-header">Intelligence & Research</div>
+    <div class="panel-card">
+      <div class="card-body">
+        Intel quests, research centre, and optimization strategies.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       CONSTRUCTION PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-construction" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>Construction & Castle Growth</strong><br>
-      Planned content: build orders, priority buildings, and long‑term account growth paths.
+  <!-- CONSTRUCTION PANEL -->
+  <div id="panel-construction" class="panel">
+    <div class="panel-header">Construction & Growth</div>
+    <div class="panel-card">
+      <div class="card-body">
+        Build orders, priority buildings, and long-term account growth paths.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       EVENTS PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-events" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>Events & Rotations</strong><br>
-      This will map out weekly rotations, Royal City Clash timing, and event‑based optimization.
+  <!-- EVENTS PANEL -->
+  <div id="panel-events" class="panel">
+    <div class="panel-header">Events & Rotations</div>
+    <div class="panel-card">
+      <div class="card-body">
+        Weekly rotations, Royal City Clash timing, and event-based optimization.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       UNION PANEL (PLACEHOLDER)
-       ============================ -->
-  <div id="tab-union" class="tab-panel">
-    <div class="panel-placeholder">
-      <strong>Union Protocols</strong><br>
-      Planned content: [OOF] structure, roles, war rules, NAPs, and diplomacy notes for server #327.
+  <!-- UNION PANEL -->
+  <div id="panel-union" class="panel">
+    <div class="panel-header">Union Protocols</div>
+    <div class="panel-card">
+      <div class="card-body">
+        [OOF] structure, roles, war rules, NAPs, and diplomacy notes for server #327.
+      </div>
+      <div class="card-note">Coming soon in v2.0</div>
     </div>
   </div>
 
-  <!-- ============================
-       SEASON 1 PANEL
-       ============================ -->
-  <div id="tab-season1" class="tab-panel">
-
-    <div class="season1-wrapper">
-
-      <!-- LEFT: SUB-TABS -->
-      <aside class="season1-sidebar">
-        <div class="season1-sidebar-title">Season 1: "Winter Is Coming"</div>
-
-        <button class="season1-subtab active" data-target="s1-overview">8.1 Overview</button>
-        <button class="season1-subtab" data-target="s1-furnace">8.2 Furnace System</button>
-        <button class="season1-subtab" data-target="s1-union">8.3 Union Furnace</button>
-        <button class="season1-subtab" data-target="s1-fuel">8.4 Fuel Types</button>
-        <button class="season1-subtab" data-target="s1-coldsnap">8.5 Coldsnap</button>
-        <button class="season1-subtab" data-target="s1-temp">8.6 Temperature</button>
-        <button class="season1-subtab" data-target="s1-nodes">8.7 Resource Nodes</button>
-        <button class="season1-subtab" data-target="s1-map">8.8 Map Strategy</button>
-        <button class="season1-subtab" data-target="s1-diplomacy">8.9 Diplomacy</button>
-        <button class="season1-subtab" data-target="s1-war">8.10 War Windows</button>
-        <button class="season1-subtab" data-target="s1-rewards">8.11 Rewards</button>
-        <button class="season1-subtab" data-target="s1-mistakes">8.12 Mistakes</button>
-        <button class="season1-subtab" data-target="s1-checklist">8.13 Prep Checklist</button>
-      </aside>
-
-      <!-- RIGHT: CONTENT AREA -->
-      <main class="season1-content">
-
-  <!-- 8.1 Season Overview & Timeline -->
-  <section id="s1-overview" class="s1-section active">
-  <h2>8.1 — Season Overview & Timeline</h2>
-
-  <div class="season1-card">
-    <p>
-      Season 1: "Winter Is Coming" is built around temperature, Season Resistance, and city control.
-      Cold Snaps, city unlock phases, and cross‑kingdom events all stack together, so your survival
-      depends on planning week by week instead of treating it like a normal season.
-    </p>
-  </div>
-
-  <div class="season1-card">
-    <h3>Core seasonal mechanics</h3>
-    <ul>
-      <li><strong>Cold Snap (Week 1–7):</strong> Periodic temperature drops divided into 12 levels, with varying durations and countdowns before and during each snap.</li>
-      <li><strong>City Unlocks:</strong> Lv.1–2 cities in Week 1, Lv.3–4 in Week 2, Lv.5–6 in Week 3, and the Lv.7 Royal City in Week 4.</li>
-      <li><strong>City Race:</strong> Unions and kingdoms compete for Ice Crystals based on city and mine occupation across the season.</li>
-      <li><strong>Kingdom Expedition:</strong> Cross‑kingdom city and mine occupation with a hard cap of 4 cities per union in Expedition.</li>
-      <li><strong>Royal City Clash & Clash of Kingdoms:</strong> Royal City battlefield plus bracketed kingdom‑vs‑kingdom war.</li>
-      <li><strong>Hero Systems:</strong> Hero Promotion (Crystal to S+), Level Swap, and Season Boost decorations/heroes.</li>
-    </ul>
-  </div>
-
-  <!-- Your requested S1 Pro Tip -->
-  <div class="reminder-footer">
-    <p><em>"S1 Pro Tip: cancelling your march to an unfrozen target returns your squad while maintaining the accelerated speed boost."</em></p>
-  </div>
-</section>
-
-
-  <!-- 8.2 Thermal Furnace & Season Resistance -->
-  <section id="s1-furnace" class="s1-section">
-    <h2>8.2 — Thermal Furnace & Season Resistance</h2>
-
-    <div class="season1-card">
-      <p>
-        Your Thermal Furnace is the core building for surviving Season 1. It controls your castle temperature,
-        unlocks key milestones, and ties directly into Season Resistance and progression.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Early‑season priorities (Week 1)</h3>
-      <ul>
-        <li>Upgrade your <strong>Thermal Furnace</strong> as a top priority — it directly affects your survival and combat performance.</li>
-        <li>Upgrade your <strong>Mithril Workshop</strong> and consider activating the <strong>Season Weekly Card</strong> for an extra workshop and +250 Season Resistance.</li>
-        <li>Upgrade your <strong>Union Furnace</strong> to raise land temperature around your hive and donate Coal and Gold daily.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Progression milestones</h3>
-      <ul>
-        <li>At <strong>Thermal Furnace Lv.12+</strong>: recommended by Week 1 for basic stability.</li>
-        <li>At <strong>Thermal Furnace Lv.20</strong>: unlocks the <strong>Halls of War</strong>.</li>
-        <li>At <strong>Thermal Furnace Lv.30</strong>: key milestone for Season progression and Level Swap rewards.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"If your Thermal Furnace isn’t keeping up with the week’s Cold Snap, nothing else you build will matter."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.3 Union Furnace & Land Temperature -->
-  <section id="s1-union" class="s1-section">
-    <h2>8.3 — Union Furnace & Land Temperature</h2>
-
-    <div class="season1-card">
-      <p>
-        The Union Furnace raises land temperature around your union’s territory and is critical for keeping
-        members from freezing, especially during deeper Cold Snaps and city pushes.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Function & usage</h3>
-      <ul>
-        <li>Increases land temperature in its radius, helping castles resist freezing and enabling events like Snowland Treasure.</li>
-        <li>Requires daily donations of <strong>Coal</strong> and <strong>Gold</strong> to level up.</li>
-        <li>Should be relocated strategically before major Cold Snaps and city pushes.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Weekly focus</h3>
-      <ul>
-        <li><strong>Week 1–2:</strong> Steadily upgrade Union Furnace and keep it active as Cold Snaps intensify.</li>
-        <li><strong>Before big Cold Snaps:</strong> R5s should move the union rally point and Furnace to high‑temperature zones.</li>
-        <li><strong>During city pushes:</strong> Position it to cover as many active fighters as possible.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"A high‑level Union Furnace is wasted if it’s sitting in the wrong place — move the heat where the fighting is."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.4 Fuel, Coal Sources & Snowland Treasure -->
-  <section id="s1-fuel" class="s1-section">
-    <h2>8.4 — Fuel, Coal Sources & Snowland Treasure</h2>
-
-    <div class="season1-card">
-      <h3>Cold Snap & freezing rules</h3>
-      <ul>
-        <li><strong>Cold Snaps</strong> significantly lower kingdom temperature and are divided into 12 levels with varying durations.</li>
-        <li>Your castle <strong>freezes at -20°C</strong> or below. While frozen, you can still:
-          <ul>
-            <li>Kill Frost Zombies</li>
-            <li>Farm resources and kill normal zombies</li>
-            <li>Plunder Wagons</li>
-            <li>Complete some intelligence quests (except rally‑required zombies)</li>
-            <li>Do Acorn Tavern plunder quests</li>
-            <li>Participate in City War declarations (R4–R5 only)</li>
-          </ul>
-        </li>
-        <li>While frozen, you <strong>cannot</strong>:
-          <ul>
-            <li>Fight Elite Zombies</li>
-            <li>Launch rallies</li>
-            <li>Join Union Boss events</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Snowland Treasure (Week 1–8)</h3>
-      <ul>
-        <li>Mysterious treasures appear when land temperature reaches <strong>0°C or higher</strong>.</li>
-        <li>Break the ice and claim up to <strong>5 treasure rewards per day</strong>.</li>
-        <li>Capturing a city reveals how many treasures remain in its land.</li>
-        <li>Raise land temperature by:
-          <ul>
-            <li>Capturing the city</li>
-            <li>Moving and activating your Union Furnace there</li>
-            <li>Using the class skill <strong>Meteor Strike</strong> (when available)</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Farm Escape (Week 1–8)</h3>
-      <ul>
-        <li>Mini‑game where a new stage unlocks daily.</li>
-        <li>Clearing stages grants resources, including <strong>Coal</strong>.</li>
-        <li>One of the primary Coal sources in early Season 1, especially Weeks 1–3.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"If you’re ignoring Farm Escape and Snowland Treasure, you’re choosing to be poor in the one resource that keeps you alive."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.5 Cold Snap Levels & Weekly Drops -->
-  <section id="s1-coldsnap" class="s1-section">
-    <h2>8.5 — Cold Snap Levels & Weekly Drops</h2>
-
-    <div class="season1-card">
-      <p>
-        Cold Snaps escalate over the season, with each week dropping kingdom temperature more aggressively.
-        You’re given countdowns before and during each snap, but if you don’t act on them, you freeze.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Weekly Cold Snap intensity</h3>
-      <ul>
-        <li><strong>Week 1:</strong> Early Cold Snaps; recommended to activate Overlode mode and keep both Thermal and Union Furnaces running.</li>
-        <li><strong>Week 2:</strong> Cold Snap can drop temperatures by up to <strong>30°C</strong>.</li>
-        <li><strong>Week 3:</strong> Cold Snap can drop temperatures by up to <strong>50°C</strong>.</li>
-        <li><strong>Week 5:</strong> Cold Snap can drop temperatures by up to <strong>90°C</strong>.</li>
-        <li><strong>Week 6:</strong> Cold Snap can drop temperatures by up to <strong>110°C</strong>.</li>
-        <li><strong>Week 7 (Ultimate Cold Snap):</strong> Temperatures can drop by up to <strong>130°C</strong>.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Preparation checklist before each Cold Snap</h3>
-      <ul>
-        <li>Raise your castle temperature in advance — don’t wait for the drop.</li>
-        <li>Relocate to higher‑temperature zones if needed.</li>
-        <li>Ensure Thermal Furnace and Union Furnace are activated.</li>
-        <li>R5s should move the union rally point to safer zones before major drops.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"Cold Snaps are announced in advance — if you freeze, it’s not surprise, it’s neglect."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.6 Temperature, Season Resistance & Boosts -->
-  <section id="s1-temp" class="s1-section">
-    <h2>8.6 — Temperature, Season Resistance & Seasonal Boosts</h2>
-
-    <div class="season1-card">
-      <h3>Temperature & Season Resistance</h3>
-      <ul>
-        <li>In Season 1, <strong>temperature</strong> and <strong>Season Resistance</strong> directly affect your battle performance.</li>
-        <li>Upgrading the <strong>Thermal Furnace</strong> and <strong>Mithril Workshop</strong> is essential to maintain combat strength.</li>
-        <li>The <strong>Season Weekly Card</strong> grants an extra Mithril Workshop and +250 Season Resistance.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Season Boost (Week 1–7)</h3>
-      <ul>
-        <li>Extra buffs are granted when using specific decorations and heroes:
-          <ul>
-            <li><strong>Castle Skin:</strong> Snowy Night Parade</li>
-            <li><strong>Heroes:</strong> Crystal, Sera, Fenixia, Daphne</li>
-            <li><strong>Decoration:</strong> Order Spire</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"Season Resistance isn’t a luxury stat in Season 1 — it’s the difference between fighting at full power and swinging with numb hands."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.7 Cities, Mines & City Race -->
-  <section id="s1-nodes" class="s1-section">
-    <h2>8.7 — Cities, Mines & City Race</h2>
-
-    <div class="season1-card">
-      <h3>City Race (Week 1–7)</h3>
-      <ul>
-        <li><strong>Union ranking:</strong> Unions compete based on total Ice Crystals obtained throughout the season.</li>
-        <li><strong>Kingdom ranking:</strong> A kingdom’s total Ice Crystals equal the sum of all unions’ Ice Crystals in that kingdom.</li>
-        <li>Rewards are distributed at settlement based on these rankings.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>City unlock schedule</h3>
-      <ul>
-        <li><strong>Week 1:</strong> Lv.1–2 cities</li>
-        <li><strong>Week 2:</strong> Lv.3–4 cities</li>
-        <li><strong>Week 3:</strong> Lv.5–6 cities</li>
-        <li><strong>Week 4:</strong> Lv.7 Royal City</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Mine limits from city occupation</h3>
-      <ul>
-        <li>Base mine limit: <strong>3</strong>.</li>
-        <li><strong>Lv.1–5 cities:</strong> +1 mine limit per city.</li>
-        <li><strong>Lv.6 cities:</strong> +2 mine limit per city.</li>
-        <li><strong>Royal City:</strong> no mine limit bonus.</li>
-        <li>If you lose a city, your mine limit drops, but you keep existing mines unless you manually abandon them.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"City Race isn’t just about bragging rights — it quietly decides how many mines your union is allowed to own."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.8 Royal City Clash -->
-  <section id="s1-map" class="s1-section">
-    <h2>8.8 — Royal City Clash</h2>
-
-    <div class="season1-card">
-      <p>
-        Royal City Clash in Season 1 works the same as the previous season, with one key change:
-        there are now <strong>four Lv.6 cities</strong> instead of three.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Royal City rules</h3>
-      <ul>
-        <li>Royal City does <strong>not</strong> provide Ice Crystal points or occupation rewards.</li>
-        <li>Royal City is <strong>not contestable by other servers</strong>.</li>
-        <li>Your server must occupy at least one Lv.6 city in your own kingdom during Kingdom Expedition, or:
-          <ul>
-            <li>Your server cannot occupy its own Royal City.</li>
-            <li>Your server will be <strong>Kingless</strong> and unable to use titles.</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"If your server fails to hold a single Lv.6 city, you don’t just lose a fight — you lose your King."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.9 Kingdom Expedition -->
-  <section id="s1-diplomacy" class="s1-section">
-    <h2>8.9 — Kingdom Expedition</h2>
-
-    <div class="season1-card">
-      <p>
-        Kingdom Expedition lets unions project power into other kingdoms, occupying their cities and mines
-        from a fixed Outpost.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Core mechanics (Week 3–7)</h3>
-      <ul>
-        <li>Unions set an <strong>Outpost</strong> in another kingdom as a permanent starting point.</li>
-        <li>The Outpost is <strong>immovable</strong> once placed, so choose the target kingdom and location carefully.</li>
-        <li>Your union can occupy a maximum of <strong>4 cities</strong> in Kingdom Expedition.</li>
-        <li>Total city cap: <strong>8 cities</strong> (4 in your own kingdom + 4 in Expedition).</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"A badly placed Outpost locks your entire union into a bad decision for the rest of the event."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.10 Kingdom War Declaration -->
-  <section id="s1-war" class="s1-section">
-    <h2>8.10 — Kingdom War Declaration</h2>
-
-    <div class="season1-card">
-      <p>
-        Kingdom War Declaration changes how often you can declare war on cities and when those declarations happen.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Declaration rules (Week 4–7)</h3>
-      <ul>
-        <li><strong>Before</strong> Kingdom War Declaration begins:
-          <ul>
-            <li>Your union has <strong>3 war declarations per day</strong> for cities.</li>
-          </ul>
-        </li>
-        <li><strong>After</strong> the event begins:
-          <ul>
-            <li>City War Declarations are limited to <strong>2 chances per Wednesday and Saturday</strong> only.</li>
-            <li>The total daily number of declarations (your own kingdom + other kingdoms) is <strong>2</strong> on those days.</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"In Kingdom War Declaration, your real resource isn’t troops — it’s declaration slots."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.11 Clash of Kingdoms -->
-  <section id="s1-rewards" class="s1-section">
-    <h2>8.11 — Clash of Kingdoms</h2>
-
-    <div class="season1-card">
-      <p>
-        Clash of Kingdoms in Season 1 works the same as Season 0, with the Royal City as the main battlefield
-        even before your server holds a Lv.6 city.
-      </p>
-    </div>
-
-    <div class="season1-card">
-      <h3>Behavior & restrictions</h3>
-      <ul>
-        <li>Expect slower movements for attacks, rallies, and scouting to castles, guardians, and the Royal City.</li>
-        <li>Heating allies’ castles is also slower during Clash of Kingdoms.</li>
-        <li><strong>Important:</strong> Do not use Kingdom Expedition teleportation during Clash of Kingdoms hour, or you won’t be able to participate in attacking/reinforcing the Royal City.</li>
-        <li>Use the traditional <strong>Attack</strong> or <strong>Defend</strong> buttons to avoid bugs.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"If you teleport with Kingdom Expedition during Clash of Kingdoms, you’re opting out of the main fight by accident."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.12 Hero Systems: Promotion, Level Swap & Season Boost -->
-  <section id="s1-mistakes" class="s1-section">
-    <h2>8.12 — Hero Systems: Promotion, Level Swap & Seasonal Buffs</h2>
-
-    <div class="season1-card">
-      <h3>Hero Promotion (Week 2–7)</h3>
-      <ul>
-        <li>During the event, <strong>5‑star Crystal</strong> can be promoted to an <strong>S+</strong> tier hero.</li>
-        <li>Make sure heroes are idle (no Tavern quests, Wagon quests, or rallies) before promoting.</li>
-        <li>If her Honor Wall was unlocked before promotion, those shards are refunded via in‑game mail.</li>
-        <li>Upgrading S+ Crystal still uses S‑tier shards, but at <strong>double cost</strong>.</li>
-        <li>If you promote Crystal during the event, she remains S+ after the season ends.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Level Swap (Week 1–7)</h3>
-      <ul>
-        <li>Consume a <strong>Level Swap Voucher</strong> to transfer levels between any two heroes.</li>
-        <li>Star tier and gear level are unaffected, but some previously unlocked skills may relock.</li>
-        <li>Vouchers are obtained from:
-          <ul>
-            <li><strong>Goals → Build Furnace → Lv.5 Rewards</strong></li>
-            <li><strong>Goals → Build Furnace → Lv.30 Rewards</strong></li>
-          </ul>
-        </li>
-        <li>Best used by swapping levels from a high‑level, low‑priority hero to a low‑level core DPS or tank.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Season Boost recap</h3>
-      <ul>
-        <li>Extra buffs from:
-          <ul>
-            <li><strong>Castle Skin:</strong> Snowy Night Parade</li>
-            <li><strong>Heroes:</strong> Crystal, Sera, Fenixia, Daphne</li>
-            <li><strong>Decoration:</strong> Order Spire</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"Level Swap and Hero Promotion are how you fix bad early investments — if you ignore them, you’re stuck with your mistakes all season."</em></p>
-    </div>
-  </section>
-
-  <!-- 8.13 Season Settlement & Final Week Focus -->
-  <section id="s1-checklist" class="s1-section">
-    <h2>8.13 — Final Week, Settlement & Checklist</h2>
-
-    <div class="season1-card">
-      <h3>Week 7: Final push</h3>
-      <ul>
-        <li>Final war day for Season 1 Kingdom Expedition — Halls of War buildings should be high level, especially your main faction.</li>
-        <li>Final push for City Race — optimize city and mine captures for leaderboard settlement.</li>
-        <li>Clash of Kingdoms Conqueror — final settlement for bracket winners.</li>
-        <li>Union Duel League — final push for VS event points and rewards.</li>
-        <li>Ultimate Cold Snap — up to <strong>130°C</strong> temperature drop; raise castle temperature in time.</li>
-      </ul>
-    </div>
-
-    <div class="season1-card">
-      <h3>Week 8: Season settlement</h3>
-      <ul>
-        <li>Season settlement distributes rewards based on <strong>Union</strong> and <strong>Kingdom</strong> rankings.</li>
-        <li>R5s receive union rank rewards and manually distribute member rewards.</li>
-        <li>All lords receive their kingdom rank rewards via in‑game mail.</li>
-        <li>You can still experience <strong>Snowland Treasure</strong> during this period.</li>
-      </ul>
-    </div>
-
-    <div class="reminder-footer">
-      <p><em>"By Week 8, you’re not grinding — you’re cashing out on every smart decision you made from Week 1 onward."</em></p>
-    </div>
-  </section>
-
-</main>
+  <!-- SEASON 1 PANEL -->
+  <div id="panel-season1" class="panel">
+    <div class="season1-container">
+      
+      <!-- SIDE NAV -->
+      <nav class="season1-nav" id="season1Nav">
+        <div class="season1-nav-title">Season 1</div>
+        <button class="season1-nav-btn active" data-target="s1-overview">Overview</button>
+        <button class="season1-nav-btn" data-target="s1-furnace">Furnace</button>
+        <button class="season1-nav-btn" data-target="s1-union">Union Furnace</button>
+        <button class="season1-nav-btn" data-target="s1-fuel">Fuel Types</button>
+        <button class="season1-nav-btn" data-target="s1-coldsnap">Coldsnap</button>
+        <button class="season1-nav-btn" data-target="s1-temp">Temperature</button>
+        <button class="season1-nav-btn" data-target="s1-nodes">Resource Nodes</button>
+        <button class="season1-nav-btn" data-target="s1-map">Map Strategy</button>
+        <button class="season1-nav-btn" data-target="s1-diplomacy">Diplomacy</button>
+        <button class="season1-nav-btn" data-target="s1-war">War Windows</button>
+        <button class="season1-nav-btn" data-target="s1-rewards">Rewards</button>
+        <button class="season1-nav-btn" data-target="s1-mistakes">Mistakes</button>
+        <button class="season1-nav-btn" data-target="s1-checklist">Checklist</button>
+      </nav>
+
+      <!-- CONTENT -->
+      <div class="season1-content">
+
+        <!-- 8.1 Overview -->
+        <section id="s1-overview" class="season1-section active">
+          <div class="section-title">Season Overview & Timeline</div>
+          <div class="panel-card">
+            <div class="card-body">Season 1: "Winter Is Coming" is built around temperature, Season Resistance, and city control.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Core Mechanics</div>
+            <ul class="card-list">
+              <li><strong>Cold Snap (Week 1–7):</strong> Periodic temperature drops divided into 12 levels.</li>
+              <li><strong>City Unlocks:</strong> Lv.1–2 Week 1, Lv.3–4 Week 2, Lv.5–6 Week 3, Lv.7 Week 4.</li>
+              <li><strong>City Race:</strong> Unions compete for Ice Crystals.</li>
+              <li><strong>Kingdom Expedition:</strong> Cross-kingdom occupation with 4 city cap.</li>
+              <li><strong>Royal City Clash:</strong> Main battlefield event.</li>
+              <li><strong>Hero Systems:</strong> Promotion, Level Swap, Season Boost.</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">💡 Pro Tip: Cancel march to unfrozen target to keep squad with speed boost</div>
+          </div>
+        </section>
+
+        <!-- 8.2 Furnace -->
+        <section id="s1-furnace" class="season1-section">
+          <div class="section-title">Thermal Furnace & Season Resistance</div>
+          <div class="panel-card">
+            <div class="card-body">Your core building for surviving Season 1. Controls castle temperature and unlocks key milestones.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Week 1 Priorities</div>
+            <ul class="card-list">
+              <li>Upgrade <strong>Thermal Furnace</strong> as top priority</li>
+              <li>Upgrade <strong>Mithril Workshop</strong></li>
+              <li>Activate <strong>Season Weekly Card</strong> (+250 Season Resistance)</li>
+              <li>Upgrade <strong>Union Furnace</strong> for land temperature</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Milestones</div>
+            <ul class="card-list">
+              <li><strong>Lv.12+:</strong> Basic stability by Week 1</li>
+              <li><strong>Lv.20:</strong> Unlocks Halls of War</li>
+              <li><strong>Lv.30:</strong> Season progression & Level Swap rewards</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">⚠️ If Furnace falls behind Cold Snaps, nothing else matters</div>
+          </div>
+        </section>
+
+        <!-- 8.3 Union Furnace -->
+        <section id="s1-union" class="season1-section">
+          <div class="section-title">Union Furnace & Land Temperature</div>
+          <div class="panel-card">
+            <div class="card-body">Raises land temperature around union territory. Critical for preventing freezing during Cold Snaps.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Function</div>
+            <ul class="card-list">
+              <li>Increases land temperature in radius</li>
+              <li>Requires daily Coal & Gold donations</li>
+              <li>Relocate strategically before Cold Snaps</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">🔥 Position it where the fighting is, not where it started</div>
+          </div>
+        </section>
+
+        <!-- 8.4 Fuel -->
+        <section id="s1-fuel" class="season1-section">
+          <div class="section-title">Fuel, Coal & Snowland Treasure</div>
+          <div class="panel-card">
+            <div class="card-title">Freezing Rules</div>
+            <ul class="card-list">
+              <li>Castle freezes at <strong>-20°C</strong> or below</li>
+              <li>Can still: Kill Frost Zombies, farm, plunder, complete some quests</li>
+              <li>Cannot: Fight Elite Zombies, launch rallies, join Union Boss</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Snowland Treasure</div>
+            <ul class="card-list">
+              <li>Appears at <strong>0°C or higher</strong></li>
+              <li>Up to 5 rewards per day</li>
+              <li>Raise temp: capture city, move Furnace, use Meteor Strike</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Farm Escape</div>
+            <ul class="card-list">
+              <li>New stage unlocks daily</li>
+              <li>Primary Coal source for Weeks 1–3</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">💰 Skip these and stay poor in the one resource that keeps you alive</div>
+          </div>
+        </section>
+
+        <!-- 8.5 Coldsnap -->
+        <section id="s1-coldsnap" class="season1-section">
+          <div class="section-title">Cold Snap Levels & Weekly Drops</div>
+          <div class="panel-card">
+            <div class="card-title">Weekly Intensity</div>
+            <ul class="card-list">
+              <li><strong>Week 1:</strong> Early snaps, activate Overload</li>
+              <li><strong>Week 2:</strong> Up to -30°C</li>
+              <li><strong>Week 3:</strong> Up to -50°C</li>
+              <li><strong>Week 5:</strong> Up to -90°C</li>
+              <li><strong>Week 6:</strong> Up to -110°C</li>
+              <li><strong>Week 7:</strong> Ultimate snap, up to -130°C</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Prep Before Snaps</div>
+            <ul class="card-list">
+              <li>Raise castle temp in advance</li>
+              <li>Relocate to higher-temp zones</li>
+              <li>Ensure both Furnaces active</li>
+              <li>R5s move rally point to safe zones</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">❄️ Cold Snaps are announced — if you freeze, it's neglect not surprise</div>
+          </div>
+        </section>
+
+        <!-- 8.6 Temperature -->
+        <section id="s1-temp" class="season1-section">
+          <div class="section-title">Temperature & Season Resistance</div>
+          <div class="panel-card">
+            <div class="card-title">Stats Impact</div>
+            <ul class="card-list">
+              <li>Directly affects battle performance</li>
+              <li>Upgrade Thermal Furnace & Mithril Workshop</li>
+              <li>Season Weekly Card: +250 Resistance</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Season Boost Items</div>
+            <ul class="card-list">
+              <li><strong>Skin:</strong> Snowy Night Parade</li>
+              <li><strong>Heroes:</strong> Crystal, Sera, Fenixia, Daphne</li>
+              <li><strong>Decoration:</strong> Order Spire</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">⚡ Resistance isn't luxury — it's the difference between full power and numb hands</div>
+          </div>
+        </section>
+
+        <!-- 8.7 Nodes -->
+        <section id="s1-nodes" class="season1-section">
+          <div class="section-title">Cities, Mines & City Race</div>
+          <div class="panel-card">
+            <div class="card-title">City Race</div>
+            <ul class="card-list">
+              <li><strong>Union Rank:</strong> Total Ice Crystals from all members</li>
+              <li><strong>Kingdom Rank:</strong> Sum of all unions' Ice Crystals</li>
+              <li>Rewards at settlement based on rankings</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Unlock Schedule</div>
+            <ul class="card-list">
+              <li><strong>Week 1:</strong> Lv.1–2 cities</li>
+              <li><strong>Week 2:</strong> Lv.3–4 cities</li>
+              <li><strong>Week 3:</strong> Lv.5–6 cities</li>
+              <li><strong>Week 4:</strong> Lv.7 Royal City</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Mine Limits</div>
+            <ul class="card-list">
+              <li><strong>Base:</strong> 3 mines</li>
+              <li><strong>Lv.1–5 city:</strong> +1 per city</li>
+              <li><strong>Lv.6 city:</strong> +2 per city</li>
+              <li><strong>Royal City:</strong> No bonus</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">👑 City Race decides your mine cap</div>
+          </div>
+        </section>
+
+        <!-- 8.8 Map -->
+        <section id="s1-map" class="season1-section">
+          <div class="section-title">Royal City Clash</div>
+          <div class="panel-card">
+            <div class="card-body">Same as previous season with one change: <strong>four Lv.6 cities</strong> instead of three.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Rules</div>
+            <ul class="card-list">
+              <li>Royal City gives <strong>NO</strong> Ice Crystal points</li>
+              <li>Not contestable by other servers</li>
+              <li>Must hold ≥1 Lv.6 city or become <strong>Kingless</strong></li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">⚔️ Lose all Lv.6 cities = lose your King</div>
+          </div>
+        </section>
+
+        <!-- 8.9 Diplomacy -->
+        <section id="s1-diplomacy" class="season1-section">
+          <div class="section-title">Kingdom Expedition</div>
+          <div class="panel-card">
+            <div class="card-body">Cross-kingdom city occupation from a fixed Outpost.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Mechanics (Week 3–7)</div>
+            <ul class="card-list">
+              <li>Set <strong>Outpost</strong> in target kingdom (permanent)</li>
+              <li>Max <strong>4 cities</strong> in Expedition</li>
+              <li>Total cap: <strong>8 cities</strong> (4 own + 4 Expedition)</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">⚠️ Bad Outpost placement = bad season decisions locked in</div>
+          </div>
+        </section>
+
+        <!-- 8.10 War -->
+        <section id="s1-war" class="season1-section">
+          <div class="section-title">Kingdom War Declaration</div>
+          <div class="panel-card">
+            <div class="card-body">Changes how often you can declare war on cities.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Declaration Rules (Week 4–7)</div>
+            <ul class="card-list">
+              <li><strong>Before Event:</strong> 3 declarations per day</li>
+              <li><strong>During Event:</strong> 2 chances per Wednesday & Saturday only</li>
+              <li>Total daily: 2 declarations (all kingdoms combined)</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">⏰ Your real resource: declaration slots, not troops</div>
+          </div>
+        </section>
+
+        <!-- 8.11 Rewards -->
+        <section id="s1-rewards" class="season1-section">
+          <div class="section-title">Clash of Kingdoms</div>
+          <div class="panel-card">
+            <div class="card-body">Same as Season 0 with Royal City as main battlefield.</div>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Behavior</div>
+            <ul class="card-list">
+              <li>Slower attacks, rallies, scouting</li>
+              <li>Slower healing allies' castles</li>
+              <li>⚠️ Don't teleport with Expedition during Clash hour</li>
+              <li>Use traditional Attack/Defend buttons</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">🚫 Kingdom Expedition teleport = opting out of Royal City fight</div>
+          </div>
+        </section>
+
+        <!-- 8.12 Mistakes -->
+        <section id="s1-mistakes" class="season1-section">
+          <div class="section-title">Hero Systems & Boosts</div>
+          <div class="panel-card">
+            <div class="card-title">Hero Promotion (Week 2–7)</div>
+            <ul class="card-list">
+              <li>5-star Crystal → S+ tier hero</li>
+              <li>Keep heroes idle before promoting</li>
+              <li>Honor Wall shards refunded if unlocked</li>
+              <li>S+ upgrades cost 2x S-tier shards</li>
+              <li>Remains S+ after season ends</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Level Swap (Week 1–7)</div>
+            <ul class="card-list">
+              <li>Transfer levels between any heroes</li>
+              <li>Star tier & gear unaffected</li>
+              <li>Get vouchers: Furnace Lv.5 & Lv.30 rewards</li>
+              <li>Best: high-level low-priority → low-level core DPS</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">🔧 These fix bad early investments</div>
+          </div>
+        </section>
+
+        <!-- 8.13 Checklist -->
+        <section id="s1-checklist" class="season1-section">
+          <div class="section-title">Final Week & Settlement</div>
+          <div class="panel-card">
+            <div class="card-title">Week 7: Final Push</div>
+            <ul class="card-list">
+              <li>Final Kingdom Expedition war day</li>
+              <li>Max Halls of War buildings</li>
+              <li>Final City Race push</li>
+              <li>Clash of Kingdoms settlements</li>
+              <li>Union Duel League final push</li>
+              <li>Ultimate Cold Snap: -130°C</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-title">Week 8: Settlement</div>
+            <ul class="card-list">
+              <li>Rewards based on Union & Kingdom ranks</li>
+              <li>R5s distribute to members</li>
+              <li>All get kingdom rank via mail</li>
+              <li>Snowland Treasure still available</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <div class="card-note">🎁 Cash out on your smart decisions from Week 1</div>
+          </div>
+        </section>
+
+      </div>
 
     </div>
   </div>
 
 </div>
 
-  </script>
+<!-- BOTTOM TAB BAR -->
+<div class="tab-bar" id="tabBar">
+  <div class="tab-item active" data-panel="panel-pve">PvE</div>
+  <div class="tab-item" data-panel="panel-pvp">PvP</div>
+  <div class="tab-item" data-panel="panel-heroes">Heroes</div>
+  <div class="tab-item" data-panel="panel-intel">Intel</div>
+  <div class="tab-item" data-panel="panel-construction">Build</div>
+  <div class="tab-item" data-panel="panel-events">Events</div>
+  <div class="tab-item" data-panel="panel-union">Union</div>
+  <div class="tab-item" data-panel="panel-season1">S1</div>
+</div>
 
 <script>
-  // Master tab switching
-  const masterTabs = document.querySelectorAll('.master-tab');
-  const panels = document.querySelectorAll('.tab-panel');
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 
-  masterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const targetId = tab.dataset.target;
-
-      masterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      panels.forEach(p => {
-        p.classList.toggle('active', p.id === targetId);
-      });
-    });
-  });
-
-  // Season 1 sub-tab switching
-  const subButtons = document.querySelectorAll('.season1-subtab');
-  const subSections = document.querySelectorAll('.s1-section');
-
-  subButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.target;
-
-      subButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      subSections.forEach(sec => {
-        sec.classList.toggle('active', sec.id === target);
-      });
-    });
-  });
-  
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const text = "[OOF]OrganizedChaos";
-  const el = document.getElementById("title");
-  const splash = document.getElementById("splash");
-
-  if (!el || !splash) return; // safety check
-
-  let i = 0;
-  el.textContent = "";
-
-  function typeWriter() {
-    if (i < text.length) {
-      el.textContent += text.charAt(i);
-      i++;
-      setTimeout(typeWriter, 85);
-    } else {
-      closeSplash();
-    }
-  }
-
-  function closeSplash() {
-    splash.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-    splash.style.opacity = "0";
-    splash.style.transform = "scale(1.03)";
-
-    setTimeout(() => {
-      splash.remove();
-    }, 3000);
-  }
-
-  typeWriter();
+// SPLASH SCREEN
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display = 'none';
+  }, 2800);
 });
+
+// PANEL SWITCHING
+const tabBar = document.getElementById('tabBar');
+const panels = document.querySelectorAll('.panel');
+const tabItems = document.querySelectorAll('.tab-item');
+
+tabBar.addEventListener('click', (e) => {
+  const tab = e.target;
+  if (!tab.classList.contains('tab-item')) return;
+
+  const panelId = tab.dataset.panel;
+  
+  tabItems.forEach(item => item.classList.remove('active'));
+  panels.forEach(panel => panel.classList.remove('active'));
+
+  tab.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+
+  // Scroll tab into view
+  tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+});
+
+// SEASON 1 NAV
+const season1Nav = document.getElementById('season1Nav');
+const toggleBtn = document.getElementById('toggleSeason1Nav');
+const season1NavBtns = document.querySelectorAll('.season1-nav-btn');
+const season1Sections = document.querySelectorAll('.season1-section');
+
+toggleBtn.addEventListener('click', () => {
+  season1Nav.classList.toggle('show');
+});
+
+season1NavBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
+
+    season1NavBtns.forEach(b => b.classList.remove('active'));
+    season1Sections.forEach(sec => sec.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.getElementById(target).classList.add('active');
+
+    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+// REFRESH BUTTON
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+    window.location.reload();
+  } else {
+    location.reload();
+  }
+});
+
+// Show menu toggle on mobile
+window.addEventListener('resize', () => {
+  const isMobile = window.innerWidth < 768;
+  toggleBtn.style.display = isMobile ? 'flex' : 'none';
+});
+
+// Initial check
+const isMobile = window.innerWidth < 768;
+toggleBtn.style.display = isMobile ? 'flex' : 'none';
 </script>
-<button id="translateHelpBtn"
-onclick="alert('Use your browser translate feature from the menu or address bar.')">
-🌐 Translate
-</button>
+
 </body>
 </html>
-"""
