@@ -214,6 +214,26 @@ body {
   background: rgba(255, 46, 46, 0.2);
   transform: scale(0.95);
 }
+/* HAMBURGER BUTTON */
+.globalHamburger {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 46, 46, 0.85);
+  border: none;
+  border-radius: 6px;
+  display: none; /* JS will enable on mobile */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+  color: white;
+  font-size: 22px;
+}
+
+
 
 /* ============================
    TAB BAR (BOTTOM NAV)
@@ -899,19 +919,42 @@ body {
 .spacer {
   height: 8px;
 }
+.panel-nav {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100vh;
+  background: rgba(11, 13, 17, 0.95);
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  z-index: 9998;
+}
+
+.panel-nav.show {
+  transform: translateX(0);
+}
+
 
 /* ============================
    RESPONSIVE
    ============================ */
 @media (min-width: 768px) {
-  .season1-nav {
-    display: flex !important;
+  .panel-nav {
+    position: relative;
+    transform: none;
+    height: auto;
+    width: 140px; /* matches your existing pve/pvp/etc widths */
+    background: rgba(11, 13, 17, 0.9);
+    border-right: 1px solid rgba(255, 46, 46, 0.15);
   }
 
-  .season1-nav-btn {
+  .panel-nav-btn {
     font-size: 12px;
   }
 }
+
 
 @media (max-width: 480px) {
   .app-top-bar {
@@ -952,6 +995,8 @@ body {
 
 <body>
 
+
+
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-title">OOF</div>
@@ -971,7 +1016,7 @@ body {
     </div>
   </div>
   <div class="app-controls">
-    <button class="control-btn" id="toggleSeason1Nav" title="Menu" style="display: none;">☰</button>
+    <button id="globalHamburger" class="control-btn globalHamburger" title="Menu">☰</button>
     <button class="control-btn" id="refreshBtn" title="Refresh">⟳</button>
   </div>
 </div>
@@ -984,15 +1029,15 @@ body {
 
 
 <!-- PVE PANEL -->
-<div id="panel-pve" class="panel">
+<div id="panel-pve" class="panel active">
 
 
   <div class="pve-container">
 
     <!-- SIDE NAV -->
-    <nav class="pve-nav">
-      <div class="season1-nav-title">PvE Field Guide</div>
-      <button class="pve-nav-btn active" data-target="intel-overview">Overview</button>
+    <nav class="panel-nav pve-nav">
+      <div class="panel-nav-title">Player VS Environment</div>
+      <button class="pve-nav-btn active" data-target="pve-overview">Overview</button>
       <button class="pve-nav-btn" data-target="pve-zombies">Zombie Hunting</button>
       <button class="pve-nav-btn" data-target="pve-behemoths">Behemoths</button>
       <button class="pve-nav-btn" data-target="pve-expedition">Expedition</button>
@@ -1143,8 +1188,8 @@ body {
   <div class="pvp-container">
 
     <!-- SIDE NAV -->
-    <nav class="pvp-nav">
-      <div class="season1-nav-title">Player VS Player</div>
+    <nav class="panel-nav pvp-nav">
+      <div class="panel-nav-title">Player VS Player</div>
       <button class="pvp-nav-btn active" data-target="pvp-overview">Overview</button>      
       <button class="pvp-nav-btn" data-target="pvp-tile">Tile Exchange</button>
       <button class="pvp-nav-btn" data-target="pvp-rallypressure">Rally Pressure</button>
@@ -1503,8 +1548,8 @@ body {
   <div class="heroes-container">
 
     <!-- SIDE NAV -->
-    <nav class="heroes-nav">
-      <div class="season1-nav-title">Heroes & Lineups</div>
+    <nav class="panel-nav heroes-nav">
+      <div class="panel-nav-title">Heroes & Lineups</div>
       <button class="heroes-nav-btn active" data-target="heroes-overview">Overview</button>
       <button class="heroes-nav-btn" data-target="heroes-positioning">Hero Positioning</button>
       <button class="heroes-nav-btn" data-target="heroes-frontback">Frontline vs Backline</button>
@@ -1679,8 +1724,8 @@ body {
   <div class="intel-container">
 
     <!-- SIDE NAV -->
-    <nav class="intel-nav">
-      <div class="season1-nav-title">Intelligence & Research</div>
+    <nav class="panel-nav intel-nav">
+      <div class="panel-nav-title">Intelligence & Research</div>
       <button class="intel-nav-btn active" data-target="intel-overview">Overview</button>
       <button class="intel-nav-btn" data-target="intel-quests">Intel Quests</button>
       <button class="intel-nav-btn" data-target="intel-research">Research Center</button>
@@ -1809,8 +1854,8 @@ body {
   <div class="construction-container">
 
     <!-- SIDE NAV -->
-    <nav class="construction-nav">
-      <div class="season1-nav-title">Building Construction & Growth</div>
+    <nav class="panel-nav construction-nav">
+      <div class="panel-nav-title">Building Construction & Growth</div>
       <button class="construction-nav-btn active" data-target="construction-overview">Overview</button>  
       <button class="construction-nav-btn" data-target="construction-priority">Build Priority</button>
       <button class="construction-nav-btn" data-target="construction-castle">Castle & Core</button>
@@ -1963,8 +2008,8 @@ body {
   <div class="events-container">
 
     <!-- SIDE NAV -->
-    <nav class="events-nav">
-      <div class="season1-nav-title">Events & Rotations</div>
+    <nav class="panel-nav events-nav">
+      <div class="panel-nav-title">Events & Rotations</div>
       <button class="events-nav-btn active" data-target="events-overview">Overview</button>
       <button class="events-nav-btn" data-target="events-weekly">Weekly Rotation</button>
       <button class="events-nav-btn" data-target="events-utc">UTC Timers</button>
@@ -2186,8 +2231,8 @@ body {
   <div class="union-container">
 
     <!-- SIDE NAV -->
-    <nav class="union-nav">
-      <div class="season1-nav-title">Union Protocols</div>
+    <nav class="panel-nav union-nav">
+      <div class="panel-nav-title">Union Protocols</div>
       <button class="union-nav-btn active" data-target="union-overview">Overview</button>
       <button class="union-nav-btn" data-target="union-structure">Union Structure</button>
       <button class="union-nav-btn" data-target="union-roles">Roles & Responsibilities</button>
@@ -2411,8 +2456,8 @@ body {
     <div class="season1-container">
       
       <!-- SIDE NAV -->
-      <nav class="season1-nav" id="season1Nav">
-        <div class="season1-nav-title">Season 1</div>
+      <nav class="panel-nav season1-nav">
+        <div class="panel-nav-title">Season 1</div>
         <button class="season1-nav-btn active" data-target="s1-overview">Overview</button>
         <button class="season1-nav-btn" data-target="s1-furnace">Furnace</button>
         <button class="season1-nav-btn" data-target="s1-union">Union Furnace</button>
@@ -2477,7 +2522,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">⚠️ If Furnace falls behind Cold Snaps, nothing else matters</div>
+            <div class="card-note"> If Furnace falls behind Cold Snaps, nothing else matters</div>
           </div>
         </section>
 
@@ -2496,7 +2541,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">🔥 Position it where the fighting is, not where it started</div>
+            <div class="card-note"> Position it where the fighting is, not where it started</div>
           </div>
         </section>
 
@@ -2527,7 +2572,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">💰 Skip these and stay poor in the one resource that keeps you alive</div>
+            <div class="card-note"> Skip these and stay poor in the one resource that keeps you alive</div>
           </div>
         </section>
 
@@ -2555,7 +2600,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">❄️ Cold Snaps are announced — if you freeze, it's neglect not surprise</div>
+            <div class="card-note"> Cold Snaps are announced — if you freeze, it's neglect not surprise</div>
           </div>
         </section>
 
@@ -2579,7 +2624,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">⚡ Resistance isn't luxury — it's the difference between full power and numb hands</div>
+            <div class="card-note"> Resistance isn't luxury — it's the difference between full power and numb hands</div>
           </div>
         </section>
 
@@ -2613,7 +2658,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">👑 City Race decides your mine cap</div>
+            <div class="card-note"> City Race decides your mine cap</div>
           </div>
         </section>
 
@@ -2632,7 +2677,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">⚔️ Lose all Lv.6 cities = lose your King</div>
+            <div class="card-note"> Lose all Lv.6 cities = lose your King</div>
           </div>
         </section>
 
@@ -2651,7 +2696,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">⚠️ Bad Outpost placement = bad season decisions locked in</div>
+            <div class="card-note"> Bad Outpost placement = bad season decisions locked in</div>
           </div>
         </section>
 
@@ -2670,7 +2715,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">⏰ Your real resource: declaration slots, not troops</div>
+            <div class="card-note"> Your real resource: declaration slots, not troops</div>
           </div>
         </section>
 
@@ -2678,7 +2723,7 @@ body {
         <section id="s1-rewards" class="season1-section">
           <div class="section-title">Clash of Kingdoms</div>
           <div class="panel-card">
-            <div class="card-body">Same as Season 0 with Royal City as main battlefield.</div>
+            <div class="card-body">Same as always with Royal City as main battlefield.</div>
           </div>
           <div class="panel-card">
             <div class="card-title">Behavior</div>
@@ -2690,7 +2735,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">🚫 Kingdom Expedition teleport = opting out of Royal City fight</div>
+            <div class="card-note"> Kingdom Expedition teleport = opting out of Royal City fight</div>
           </div>
         </section>
 
@@ -2717,7 +2762,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">🔧 These fix bad early investments</div>
+            <div class="card-note"> These fix bad early investments</div>
           </div>
         </section>
 
@@ -2745,7 +2790,7 @@ body {
             </ul>
           </div>
           <div class="panel-card">
-            <div class="card-note">🎁 Cash out on your smart decisions from Week 1</div>
+            <div class="card-note">Cash out on your smart decisions from Week 1</div>
           </div>
         </section>
 
@@ -2769,7 +2814,7 @@ body {
 </div>
 
 <script>
-// Register Service Worker for PWA
+// JAVASCRIPT BEGINS HERE
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/OOF/sw.js').catch(() => {});
 }
@@ -2792,168 +2837,125 @@ tabBar.addEventListener('click', (e) => {
   if (!tab.classList.contains('tab-item')) return;
 
   const panelId = tab.dataset.panel;
-  
+
   tabItems.forEach(item => item.classList.remove('active'));
   panels.forEach(panel => panel.classList.remove('active'));
 
   tab.classList.add('active');
   document.getElementById(panelId).classList.add('active');
 
-  // Scroll tab into view
   tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 });
 
-// SEASON 1 NAV
-const season1Nav = document.getElementById('season1Nav');
-const toggleBtn = document.getElementById('toggleSeason1Nav');
-const season1NavBtns = document.querySelectorAll('.season1-nav-btn');
-const season1Sections = document.querySelectorAll('.season1-section');
+/* ============================================================
+   UNIVERSAL PANEL NAV HANDLER
+   ============================================================ */
 
-toggleBtn.addEventListener('click', () => {
-  season1Nav.classList.toggle('show');
-});
+function initPanelNav(navBtnSelector, sectionSelector) {
+  const navBtns = document.querySelectorAll(navBtnSelector);
+  const sections = document.querySelectorAll(sectionSelector);
 
-season1NavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
+  if (!navBtns.length || !sections.length) return;
 
-    season1NavBtns.forEach(b => b.classList.remove('active'));
-    season1Sections.forEach(sec => sec.classList.remove('active'));
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
 
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
+      navBtns.forEach(b => b.classList.remove('active'));
+      sections.forEach(sec => sec.classList.remove('active'));
 
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      btn.classList.add('active');
+      document.getElementById(target).classList.add('active');
+
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
   });
-});
+}
 
+/* ============================================================
+   INITIALIZE ALL PANELS (INCLUDING SEASON‑1)
+   ============================================================ */
 
-const pveNavBtns = document.querySelectorAll('.pve-nav-btn');
-const pveSections = document.querySelectorAll('.pve-section');
+initPanelNav('.season1-nav-btn', '.season1-section');
+initPanelNav('.pve-nav-btn', '.pve-section');
+initPanelNav('.pvp-nav-btn', '.pvp-section');
+initPanelNav('.heroes-nav-btn', '.heroes-section');
+initPanelNav('.intel-nav-btn', '.intel-section');
+initPanelNav('.construction-nav-btn', '.construction-section');
+initPanelNav('.events-nav-btn', '.events-section');
+initPanelNav('.union-nav-btn', '.union-section');
 
-pveNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
+/* ============================================================
+   SEASON‑1 MOBILE TOGGLE
+   ============================================================ */
 
-    pveNavBtns.forEach(b => b.classList.remove('active'));
-    pveSections.forEach(sec => sec.classList.remove('active'));
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = document.getElementById('globalHamburger');
 
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
+  // Toggle nav
+  hamburger.addEventListener('click', () => {
+    const activePanel = document.querySelector('.panel.active');
+    if (!activePanel) return;
 
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const nav = activePanel.querySelector('.panel-nav');
+    if (!nav) return;
+
+    nav.classList.toggle('show');
   });
-});
 
-const pvpNavBtns = document.querySelectorAll('.pvp-nav-btn');
-const pvpSections = document.querySelectorAll('.pvp-section');
+  // Tap outside to close
+  document.addEventListener('click', (e) => {
+    const activePanel = document.querySelector('.panel.active');
+    if (!activePanel) return;
 
-pvpNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
+    const nav = activePanel.querySelector('.panel-nav');
+    if (!nav) return;
 
-    pvpNavBtns.forEach(b => b.classList.remove('active'));
-    pvpSections.forEach(sec => sec.classList.remove('active'));
+    const clickedInsideNav = nav.contains(e.target);
+    const clickedHamburger = hamburger.contains(e.target);
 
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!clickedInsideNav && !clickedHamburger) {
+      nav.classList.remove('show');
+    }
   });
-});
 
+  // Swipe gestures (mobile)
+  let startX = 0;
 
-const heroesNavBtns = document.querySelectorAll('.heroes-nav-btn');
-const heroesSections = document.querySelectorAll('.heroes-section');
-
-heroesNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
-
-    heroesNavBtns.forEach(b => b.classList.remove('active'));
-    heroesSections.forEach(sec => sec.classList.remove('active'));
-
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
   });
-});
 
-const intelNavBtns = document.querySelectorAll('.intel-nav-btn');
-const intelSections = document.querySelectorAll('.intel-section');
+  document.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
 
-intelNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
+    // Swipe right to open
+    if (endX - startX > 80) {
+      const activePanel = document.querySelector('.panel.active');
+      if (!activePanel) return;
 
-    intelNavBtns.forEach(b => b.classList.remove('active'));
-    intelSections.forEach(sec => sec.classList.remove('active'));
+      const nav = activePanel.querySelector('.panel-nav');
+      if (nav) nav.classList.add('show');
+    }
 
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
+    // Swipe left to close
+    if (startX - endX > 80) {
+      const activePanel = document.querySelector('.panel.active');
+      if (!activePanel) return;
 
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-});
-
-const constructionNavBtns = document.querySelectorAll('.construction-nav-btn');
-const constructionSections = document.querySelectorAll('.construction-section');
-
-constructionNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
-
-    constructionNavBtns.forEach(b => b.classList.remove('active'));
-    constructionSections.forEach(sec => sec.classList.remove('active'));
-
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-});
-
-
-const eventsNavBtns = document.querySelectorAll('.events-nav-btn');
-const eventsSections = document.querySelectorAll('.events-section');
-
-eventsNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
-
-    eventsNavBtns.forEach(b => b.classList.remove('active'));
-    eventsSections.forEach(sec => sec.classList.remove('active'));
-
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const nav = activePanel.querySelector('.panel-nav');
+      if (nav) nav.classList.remove('show');
+    }
   });
 });
 
 
 
-const unionNavBtns = document.querySelectorAll('.union-nav-btn');
-const unionSections = document.querySelectorAll('.union-section');
 
-unionNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
+/* ============================================================
+   REFRESH BUTTON
+   ============================================================ */
 
-    unionNavBtns.forEach(b => b.classList.remove('active'));
-    unionSections.forEach(sec => sec.classList.remove('active'));
-
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-});
-
-
-
-// REFRESH BUTTON
 document.getElementById('refreshBtn').addEventListener('click', () => {
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
@@ -2963,15 +2965,18 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
   }
 });
 
-// Show menu toggle on mobile
-window.addEventListener('resize', () => {
-  const isMobile = window.innerWidth < 768;
-  toggleBtn.style.display = isMobile ? 'flex' : 'none';
-});
+/* ============================================================
+   MOBILE TOGGLE VISIBILITY
+   ============================================================ */
 
-// Initial check
-const isMobile = window.innerWidth < 768;
-toggleBtn.style.display = isMobile ? 'flex' : 'none';
+function updateToggleVisibility() {
+  const mobile = window.innerWidth < 768;
+  globalHamburger.style.display = mobile ? 'flex' : 'none';
+}
+
+window.addEventListener('resize', updateToggleVisibility);
+updateToggleVisibility();
+
 </script>
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -2979,7 +2984,7 @@ const redirect = params.get("redirect");
 
 if (redirect) {
   window.history.replaceState({}, "", "/OOF/");
-}
+};
 </script>
 </body>
 </html>
