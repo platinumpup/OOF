@@ -179,13 +179,14 @@ body {
 }
 
 .app-title-sub {
-  font-size: 11px;
+  font-size: 10px;
   color: #999;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* TOP BAR CONTROLS */
 .app-controls {
   display: flex;
   gap: 8px;
@@ -214,24 +215,12 @@ body {
   background: rgba(255, 46, 46, 0.2);
   transform: scale(0.95);
 }
-/* HAMBURGER BUTTON */
+
+/* HAMBURGER BUTTON — inherits control-btn styling */
 .globalHamburger {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  width: 42px;
-  height: 42px;
-  background: rgba(255, 46, 46, 0.85);
-  border: none;
-  border-radius: 6px;
-  display: none; /* JS will enable on mobile */
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  cursor: pointer;
-  color: white;
-  font-size: 22px;
+  display: none; /* JS will show on mobile */
 }
+
 
 
 
@@ -1012,11 +1001,11 @@ body {
     <div class="app-icon">⚔</div>
     <div class="app-title-bar">
       <div class="app-title-main">[OOF] Field Guide</div>
-      <div class="app-title-sub">Server #327</div>
+      <div class="app-title-sub">Server #327 ● PlatinumBoy™</div>
     </div>
   </div>
-  <div class="app-controls">
-    <button id="globalHamburger" class="control-btn globalHamburger" title="Menu">☰</button>
+<div class="app-controls">
+    <button class="control-btn globalHamburger" id="globalHamburger" title="Menu">☰</button>
     <button class="control-btn" id="refreshBtn" title="Refresh">⟳</button>
   </div>
 </div>
@@ -1024,16 +1013,9 @@ body {
 <!-- MAIN CONTENT -->
 <div class="app-content">
 
-  
-
-
-
 <!-- PVE PANEL -->
 <div id="panel-pve" class="panel active">
-
-
   <div class="pve-container">
-
     <!-- SIDE NAV -->
     <nav class="panel-nav pve-nav">
       <div class="panel-nav-title">Player VS Environment</div>
