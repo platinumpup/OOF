@@ -217,9 +217,49 @@ body {
 }
 
 /* HAMBURGER BUTTON — inherits control-btn styling */
+/* HAMBURGER BARS */
 .globalHamburger {
-  display: none; /* JS will show on mobile */
+  position: relative;
+  display: none; /* JS controls visibility */
 }
+
+.globalHamburger .bar {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: #ff2e2e;
+  border-radius: 2px;
+  transition: 0.25s ease;
+}
+
+/* Top bar */
+.globalHamburger .bar:nth-child(1) {
+  top: 10px;
+}
+
+/* Middle bar */
+.globalHamburger .bar:nth-child(2) {
+  top: 17px;
+}
+
+/* Bottom bar */
+.globalHamburger .bar:nth-child(3) {
+  top: 24px;
+}
+
+/* ANIMATION: When menu is open */
+.globalHamburger.open .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.globalHamburger.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.globalHamburger.open .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 
 
 
@@ -1012,7 +1052,12 @@ body {
     </div>
   </div>
 <div class="app-controls">
-    <button class="control-btn globalHamburger" id="globalHamburger" title="Menu">☰</button>
+    <button class="control-btn globalHamburger" id="globalHamburger">
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</button>
+
     <button class="control-btn" id="refreshBtn" title="Refresh">⟳</button>
   </div>
 </div>
@@ -2890,6 +2935,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!nav) return;
 
     nav.classList.toggle('show');
+    hamburger.classList.toggle('open');
+
   });
 
   // Tap outside to close
