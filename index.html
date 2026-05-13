@@ -2771,7 +2771,7 @@ body {
 <script>
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+  navigator.serviceWorker.register('/OOF/sw.js').catch(() => {});
 }
 
 // SPLASH SCREEN
@@ -2973,6 +2973,13 @@ window.addEventListener('resize', () => {
 const isMobile = window.innerWidth < 768;
 toggleBtn.style.display = isMobile ? 'flex' : 'none';
 </script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const redirect = params.get("redirect");
 
+if (redirect) {
+  window.history.replaceState({}, "", "/OOF/");
+}
+</script>
 </body>
 </html>
