@@ -2959,12 +2959,22 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
    ============================================================ */
 
 function updateToggleVisibility() {
-  const mobile = window.innerWidth < 768;
-  globalHamburger.style.display = mobile ? 'flex' : "show"
-};
+  const isPWA = window.matchMedia("(display-mode: standalone)").matches;
+  const isMobile = window.innerWidth < 768;
 
-window.addEventListener('resize', updateToggleVisibility);
+  // Show hamburger if:
+  // - Mobile browser
+  // - OR desktop PWA
+  if (isMobile || isPWA) {
+    globalHamburger.style.display = "flex";
+  } else {
+    globalHamburger.style.display = "none";
+  }
+}
+
+window.addEventListener("resize", updateToggleVisibility);
 updateToggleVisibility();
+
 
 </script>
 <script>
