@@ -15,11 +15,6 @@
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-512.png">
 <link rel="manifest" href="manifest.json">
-<script>
-  if (location.pathname === "/OOF") {
-    location.replace("/OOF/");
-  }
-</script>
 
 <style>
 /* ============================
@@ -919,11 +914,12 @@ body {
   top: 0;
   left: 0;
   width: 180px;
-  height: 100vh;
+  height: calc(100vh - 56px);
   background: rgba(11, 13, 17, 0.95);
   transform: translateX(-100%);
   transition: transform 0.25s ease;
   z-index: 9998;
+
 }
 
 .panel-nav.show {
@@ -946,6 +942,12 @@ body {
 
   .panel-nav-btn {
     font-size: 12px;
+  }
+}
+@media (max-width: 768px) {
+  .panel-nav {
+    top: 56px; /* start below top bar */
+    height: calc(100vh - 56px); /* fill remaining space */
   }
 }
 
@@ -2958,8 +2960,8 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
 
 function updateToggleVisibility() {
   const mobile = window.innerWidth < 768;
-  globalHamburger.style.display = mobile ? 'flex' : 'none';
-}
+  globalHamburger.style.display = mobile ? 'flex' : "show"
+};
 
 window.addEventListener('resize', updateToggleVisibility);
 updateToggleVisibility();
