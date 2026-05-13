@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // Redirect ALL 404 routes back to your app
+    const path = window.location.pathname;
+    window.location.replace("/OOF/?redirect=" + encodeURIComponent(path));
+  </script>
+</head>
+<body></body>
+</html>
