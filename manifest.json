@@ -1,9 +1,9 @@
 {
-  "name": "[OOF]OrganizedChaos — Field Guide",
+  "name": "[OOF]OrganizedChaos",
   "short_name": "[OOF] Field Guide",
-  "description": "Season 1 Field Guide for [OOF]OrganizedChaos — Server #327. Complete guide for PvE, PvP, Heroes, and Season 1 mechanics.",
-  "start_url": "/",
-  "scope": "/",
+  "description": "Field Guide for [OOF]OrganizedChaos — Server #327.",
+  "start_url": "/OOF/",
+  "scope": "/OOF/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0b0d11",
